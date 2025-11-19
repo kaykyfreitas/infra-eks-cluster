@@ -32,7 +32,7 @@ cluster_version = "1.34"
 
 node_groups = {
   default = {
-    instance_types = ["t3.medium"]
+    instance_types = ["m8g.large"]
     capacity       = "SPOT"
 
     scaling_config = {
