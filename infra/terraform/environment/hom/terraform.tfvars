@@ -34,7 +34,7 @@ node_groups = {
   default = {
     instance_types = ["m8g.large", "c7g.large"]
     capacity       = "SPOT"
-    ami_type       = "AL2023_ARM_64"
+    ami_type       = "AL2023_ARM_64_STANDARD"
 
     scaling_config = {
       desired_size = 2
