@@ -29,6 +29,7 @@ variable "node_groups" {
     object({
       instance_types = list(string)
       capacity       = string
+      ami_type       = string
 
       scaling_config = object({
         desired_size = number

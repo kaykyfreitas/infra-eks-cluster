@@ -71,6 +71,7 @@ resource "aws_eks_node_group" "eks-worker-node" {
 
   instance_types = each.value.instance_types
   capacity_type  = each.value.capacity
+  ami_type       = each.value.ami_type
 
   scaling_config {
     desired_size = each.value.scaling_config.desired_size
