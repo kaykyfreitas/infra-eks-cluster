@@ -1,11 +1,11 @@
 variable "backend_bucket_name" {
   description = "Terraform backend AWS bucket name"
-  type = string
+  type        = string
 }
 
 variable "repository_name" {
   description = "Git repository name"
-  type = string
+  type        = string
 }
 
 variable "environment" {
@@ -63,4 +63,22 @@ variable "node_groups" {
       })
     })
   )
+}
+
+variable "cluster_users" {
+  description = "EKS cluster users"
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+}
+
+variable "cluster_roles" {
+  description = "EKS cluster roles"
+  type = list(object({
+    rolearn  = string
+    username = string
+    groups   = list(string)
+  }))
 }
