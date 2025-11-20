@@ -43,3 +43,7 @@ node_groups = {
     }
   }
 }
+
+cluster_users = []
+
+cluster_roles = []

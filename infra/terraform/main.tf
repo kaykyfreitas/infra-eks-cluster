@@ -41,3 +41,50 @@ module "eks" {
   cluster_version  = var.cluster_version
   node_groups      = var.node_groups
 }
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+}
+
+resource "kubernetes_config_map" "aws_auth" {
+
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = {
+    mapRoles = yamlencode(
+      concat(
+        [
+          {
+            rolearn  = module.eks.node_role_arn
+            username = "system:node:{{EC2PrivateDNSName}}"
+            groups   = ["system:bootstrappers", "system:nodes"]
+          },
+          {
+            rolearn  = aws_iam_role.eks_admin_role.arn
+            username = "eks-admin"
+            groups   = ["system:masters"]
+          }
+        ],
+        var.cluster_roles
+      )
+    )
+
+    mapUsers = yamlencode(
+      concat(
+        [
+          {
+            userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+            username = "aws-root-admin"
+            groups   = ["system:masters"]
+          }
+        ],
+        var.cluster_users
+      )
+    )
+  }
+}
